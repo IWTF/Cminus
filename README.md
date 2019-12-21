@@ -35,9 +35,9 @@ make clean
 ```
 ├── Makefile              # 
 ├── README.md             # 项目介绍及使用
-├── lex					  # 生成扫描器
+├── lex                   # 生成扫描器
 │   └── cm.l
-├── yyac				  # 语法解析器生成器
+├── yyac                  # 语法解析器生成器
 │   └── cm.y
 ├── test                  # 存放了可执行文件以及测试用例
 │   └── ...
@@ -46,7 +46,7 @@ make clean
     ├──	util.c
     ├── symtab.c       
     ├── analyze.c  
-    ├── obj				  # 存放目标文件
+    ├── obj               # 存放目标文件
     │   └── ... 
     └── include
         ├── globals.h     
