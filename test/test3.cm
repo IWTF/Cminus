@@ -1,0 +1,14 @@
+/*	Calculate factorial
+*	Test ID[]pointer and array
+*/
+int test(int data[])
+{ 
+      int a;
+      data[0]=1;
+      a=data[0];
+      return a;
+}
+void main(void)
+{  int num[5];
+   output(test(num));
+}

@@ -1,0 +1,21 @@
+/*	Calculate factorial
+*	Test addop mulop
+*/
+int addfunc(int a, int b)
+{
+    int c;
+    c=a+b;
+    return c;
+}
+void main(void)
+{
+    int x;
+    int y;
+    int m;
+    int n;
+    m=4;
+    n=2;
+    x=m*n;
+    y=m/n;
+    output(addfunc(x,y));
+}

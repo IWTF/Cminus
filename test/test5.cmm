@@ -1,0 +1,21 @@
+/*	Calculate factorial
+*	Test while loop and standard output
+*/
+int a;
+void outprint(int x, int y){
+	
+}
+a= 6;
+int factor;
+factor = 1.8;			// Warinig: assign int to real variable
+while( a != 0 )
+{
+	factor = factor * a;	// Warn and cast
+	a = a -1;
+}
+
+void print (void) 
+{
+	outprint(factor,a);
+	return 0;
+}
