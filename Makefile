@@ -41,5 +41,8 @@ clean:
 	-rm ./test/*.exe
 
 .PHONY: test
+ifeq ($(O), )
+	O = 
+endif
 test:
-	./test/interpreter.exe ./test/$(F)
+	./test/interpreter.exe ./test/$(I) $(O)

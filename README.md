@@ -13,12 +13,12 @@ make
 \# **测试**
 
 ```bash
-make test F=test1.txt
+make test I=test1.txt O=output.txt
 ```
-
-> 执行测试命令，`F`为`Makefile`定义的变量
->
-> 执行该命令时，需要传入要测试的文件名
+| 参数名 | 是否必填 | 描述                   |
+| :------- | :------- | :--------------------- |
+| I        | 是       | 输入的下·源文件         |
+| O        | 否       | 输出语法树、符号表到该文件（不设置时控制台输出） |
 
 \# **clean**
 
@@ -35,9 +35,9 @@ make clean
 ```
 ├── Makefile              # 
 ├── README.md             # 项目介绍及使用
-├── lex                   # 生成扫描器
+├── lex					  # 生成扫描器
 │   └── cm.l
-├── yyac                  # 语法解析器生成器
+├── yyac				  # 语法解析器生成器
 │   └── cm.y
 ├── test                  # 存放了可执行文件以及测试用例
 │   └── ...
@@ -46,7 +46,7 @@ make clean
     ├──	util.c
     ├── symtab.c       
     ├── analyze.c  
-    ├── obj               # 存放目标文件
+    ├── obj				  # 存放目标文件
     │   └── ... 
     └── include
         ├── globals.h     
