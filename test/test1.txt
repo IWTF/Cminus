@@ -1,14 +1,16 @@
-void main(void)
-{
-	int i;
-	int j;
-	i=0;
-        j=1;      
-	while (i < 10)
-	{
-		i=i+1;
-     		j=j+i;
-	}
-        output(i);
-        output(j);
+int main(void) {
+    int a;
+    int b[2];
+    int c;
+    if (a == 3) {
+        a = 1 + 1;
+    } else {
+        a = 2 + 1 * 3 / 5;
+    }
+    c = calc(3);
+}
+
+int calc(int arg) {
+    arg = 100 + arg;
+    return arg;
 }

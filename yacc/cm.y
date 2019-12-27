@@ -13,36 +13,39 @@
 #include "../src/include/scan.h"
 #include "../src/include/parse.h"
 
-static TreeNode * savedTree; /* stores syntax tree for later return */
+static TreeNode * savedTree;  /* 存储最后返回的语法树 */ 
 
 
 %}
 
-
+/*yylval uinio 数据结构 即将使用的终结符号的类型*/
 %union{
-	struct treeNode * node;
-	int intval;
-	char * idName;
-	int binaryOperator;
-	int dataType;
+	struct treeNode * node;   /*树结点*/
+	int intval;               /*int型数据*/
+	char * idName;            /*字符串*/
+	int binaryOperator;       /*二元运算符*/
+	int dataType;             /*类型 int和void*/
 }
-%token <intval> NUM
-%token <idName> ID
-%token <dataType> INT VOID
-%token <opType> PLUS SUB MUL DIV LT GT LET GET ET NET
+
+/*将这些token指定类型 指定了终结符号的符号*/
+%token <intval> NUM  /*指定返回NUM的类型是int*/
+%token <idName> ID   /*指定返回ID的类型是char* */
+%token <dataType> INT VOID 
+%token <opType> PLUS SUB MUL DIV LT GT LET GET ET NET 
 
 /* 优先级声明 */
 %right ASSIGN
 %left PLUS SUB
-%left MUL DIV
-%nonassoc LT GT LET GET ET NET
-%nonassoc UMINUS
+%left MUL DIV    
+%nonassoc LT GT LET GET ET NET 
+%nonassoc UMINUS 
 /* 声明文法中用到的tokens */
 %token IF ELSE WHILE RETURN
 %token LPAREN RPAREN SEMI LBRACE RBRACE LBRACKET RBRACKET COMMA
 %token ASSIGN
 %token NEWLINE ERROR
 
+/*定义了非终结符的node属性*/
 %type <node> stmt_list stmt
 %type <node> decl_list decl fun_decl local_decl
 %type <node> var_decl var
@@ -55,6 +58,7 @@ static TreeNode * savedTree; /* stores syntax tree for later return */
 %type <node> exp_stmt compound_stmt selec_stmt iter_stmt ret_stmt 
 %type <dataType> type_spec
 
+/*最终需要规约的终结符号*/
 %start program
 
 %% /* CM文法 */
@@ -64,19 +68,21 @@ program		: decl_list
 			;
 decl_list	: decl { $$ = $1; }
 			| decl_list decl 
-				{	TreeNode * t = $1;
+				{
+                    TreeNode * t = $1;
 					if (t != NULL)
-					{	while (t->sibling != NULL){ t = t->sibling;}
+					{	
+                        while (t->sibling != NULL){ t = t->sibling;}
 						t->sibling = $2;
 						$$ = $1;
 					}
 					else $$ = $2;
 				}
 			;
-decl		: var_decl { $$ = $1; }
-			| fun_decl { $$ = $1; }
+decl		: var_decl { $$ = $1; }  /*声明数据*/
+			| fun_decl { $$ = $1; } /*声明函数*/
 			;
-var_decl	: type_spec ID SEMI 
+var_decl	: type_spec ID SEMI    /*int a;*/
 				{
 					$$ = newStmtNode(DeclK);
 					$$->attr.name = $2;
@@ -86,16 +92,16 @@ var_decl	: type_spec ID SEMI
 					
 					$$->lineno = lineno;
 				}
-			| type_spec ID LBRACKET NUM RBRACKET SEMI
+			| type_spec ID LBRACKET NUM RBRACKET SEMI /* int a[10]; */
 				{
-					$$ = newStmtNode(DeclK);
+					$$ = newStmtNode(DeclK);   /*声明结点*/
 					$$->attr.name = $2;
 					$$->arrayLength = $4;
-					$$->type = $1;
+					$$->type = $1; /*节点类型*/
 					
-					if($$->type == Int) {
+					if($$->type == Int) {   /*Int类型*/
 						int int_array_temp[$4];
-						$$->array.intArray = int_array_temp;
+						$$->array.intArray = int_array_temp;  /*int数组大小开辟空间*/
 					}
 					$$->lineno = lineno;	
 				}
@@ -103,15 +109,15 @@ var_decl	: type_spec ID SEMI
 type_spec	: INT 	{ $$ = $1; }
 			| VOID 	{ $$ = $1; }
 			;
-fun_decl    : type_spec ID LPAREN params RPAREN  
+fun_decl    : type_spec ID LPAREN params RPAREN   /* int cmp(a); 函数声明*/
                 {
-					$$ = newStmtNode(FunK);
+					$$ = newStmtNode(FunK);  /*函数类型结点*/
 					$$->attr.name = $2;
 					$$->type = $1;
-					$$->child[0] = $4;	
+					$$->child[0] = $4;	/*转到参数时即变成了添加兄弟结点*/
 					$$->lineno = lineno;
 				}
-			| compound_stmt
+			| compound_stmt    /*？*/
 			{
 				$$ = $1; 
 				$$->lineno = lineno;
@@ -119,21 +125,21 @@ fun_decl    : type_spec ID LPAREN params RPAREN
 
 			 
 			;
-params      : param_list   { $$ = $1; }
-			| VOID         { $$ = NULL; }
+params      : param_list   { $$ = $1; }    /*参数*/
+			| VOID         { $$ = NULL; }  /*无参数*/
 			;
-param_list  : param_list COMMA param
+param_list  : param_list COMMA param  /*多个参数以逗号隔开*/
                 {
-					TreeNode * t = $1;
+					TreeNode * t = $1; 
 					if (t != NULL)
 					{	while (t->sibling != NULL){ t = t->sibling;}
-						t->sibling = $3;
+						t->sibling = $3; /*将最后一个参数加入到兄弟结点*/
 					}
-					else $$ = $3;
+					else $$ = $3;   /*只有最后一个参数*/
 				}
-			| param   { $$ = $1; } 
+			| param   { $$ = $1; }   /*一个参数*/
 			;
-param       : type_spec ID
+param       : type_spec ID      /*(int a)*/
                 {
                     $$ = newStmtNode(ParmK);
 					$$->attr.name = $2;
@@ -143,26 +149,26 @@ param       : type_spec ID
 					
 					$$->lineno = lineno;
 				}
-			| type_spec ID LBRACKET RBRACKET
+			| type_spec ID LBRACKET RBRACKET   /*int a[]*/
 			    {
-					$$ = newStmtNode(ParmK);
+					$$ = newStmtNode(ParmK);  /*参数类型结点*/
 					$$->attr.name = $2;
 					$$->type = $1;
-					$$->arrayLength = -1;
+					$$->arrayLength = -1; /*没有具体指明长度，先赋值为-1*/
 					
-					$$->lineno = lineno;
+					$$->lineno = lineno;  
 				}
 			;
 compound_stmt
-			: LBRACE local_decl stmt_list RBRACE
-				{	$$ = newStmtNode(CompoundK);
-					$$->child[0] = $2;
-					$$->child[1] = $3;
+			: LBRACE local_decl stmt_list RBRACE   /*{ 大括号内的具体函数 }*/
+				{	$$ = newStmtNode(CompoundK);   /*函数内容类型结点*/
+					$$->child[0] = $2;             /*local 指声明*/
+					$$->child[1] = $3;             /*指计算部分*/
 					
-					$$->lineno = lineno;
+					$$->lineno = lineno;      
 				}
 			;
-local_decl  : local_decl var_decl
+local_decl  : local_decl var_decl    /*多个声明时*/
                 {
                     TreeNode * t = $1;
 					if (t != NULL)
@@ -174,7 +180,7 @@ local_decl  : local_decl var_decl
 				}
 			|   { $$ = NULL; }
 	        ;
-stmt_list  : stmt_list stmt
+stmt_list  : stmt_list stmt /*多个stmt动作*/
                 {
 					TreeNode * t = $1;
 					if (t != NULL)
@@ -186,16 +192,16 @@ stmt_list  : stmt_list stmt
 				}
 			| { $$ = NULL; }
 			;
-stmt       : exp_stmt   { $$ = $1; }
-			| compound_stmt  { $$ = $1; }
-			| selec_stmt  { $$ = $1; }
-			| iter_stmt  { $$ = $1; }
-			| ret_stmt  { $$ = $1; }
+stmt       : exp_stmt   { $$ = $1; }   /*各种类型的语句功能块*/
+			| compound_stmt  { $$ = $1; }   /*{内容}和前面的嵌套*/
+			| selec_stmt  { $$ = $1; }    /*选择语句*/
+			| iter_stmt  { $$ = $1; }     /*循环语句*/
+			| ret_stmt  { $$ = $1; }      /*返回语句*/
 			;
-exp_stmt   : exp SEMI  { $$ = $1; }
-			| SEMI    { $$ = NULL; }
+exp_stmt   : exp SEMI  { $$ = $1; }       /* a=a+1;*/
+			| SEMI    { $$ = NULL; }     
 			;
-selec_stmt  : IF LPAREN exp RPAREN stmt
+selec_stmt  : IF LPAREN exp RPAREN stmt    /*if(exp) +各种类型的动作*/
                 {
 					$$ = newStmtNode(IfK);
 					$$->child[0] = $3;
@@ -203,7 +209,7 @@ selec_stmt  : IF LPAREN exp RPAREN stmt
 					$$->child[2] = NULL;
 					$$->lineno = lineno;
 			    }
-			| IF LPAREN exp RPAREN stmt ELSE stmt
+			| IF LPAREN exp RPAREN stmt ELSE stmt    /*if(exp)+动作+else+stmt*/
 			    {
                     $$ = newStmtNode(IfK);
 					$$->child[0] = $3;
@@ -212,7 +218,7 @@ selec_stmt  : IF LPAREN exp RPAREN stmt
 					$$->lineno = lineno;
 			    }
             ;
-iter_stmt   : WHILE LPAREN exp RPAREN stmt
+iter_stmt   : WHILE LPAREN exp RPAREN stmt   /*while(exp) stmt*/
                 {
 					$$ = newStmtNode(WhileK);
 					$$->child[0] = $3;
@@ -220,13 +226,13 @@ iter_stmt   : WHILE LPAREN exp RPAREN stmt
 					$$->lineno = lineno;
 			    }
 			;
-ret_stmt    : RETURN SEMI
+ret_stmt    : RETURN SEMI     /*return;*/
                 {
 					$$ = newStmtNode(RetK);
                     $$->child[0] = NULL;	
 					$$->lineno = lineno;
 				}
-			| RETURN exp SEMI
+			| RETURN exp SEMI    /*return exp;*/
 			    {
 					$$ = newStmtNode(RetK);
 					$$->child[0] = $2;
@@ -234,7 +240,7 @@ ret_stmt    : RETURN SEMI
 
 				}
 			;
-exp        : var ASSIGN exp
+exp        : var ASSIGN exp    /*赋值语句 a=exp*/
                 {
 					$$ = newStmtNode(AssignK);
 					$$->attr.name = $1;
@@ -242,9 +248,9 @@ exp        : var ASSIGN exp
 					$$->child[1] = $3;
 					$$->lineno = lineno;
 				}
-			| simp_exp   { $$ = $1; }
+			| simp_exp   { $$ = $1; }   /*判断 exp<exp*/
 			;
-var         : ID   
+var         : ID    /*id*/
                 {
 					$$ = newExpNode(IdK);
 					$$->attr.name = $1;
@@ -252,24 +258,24 @@ var         : ID
 					$$->child[0] = NULL;
 					$$->lineno = lineno;
 				}
-            | ID LBRACKET exp RBRACKET
+            | ID LBRACKET exp RBRACKET    /*数组 a[exp]*/
 			    {
-					$$ = newExpNode(IdK);
+					$$ = newExpNode(IdK);    /*id结点*/
 					$$->attr.name = $1;
 					$$->child[0] = $3;
 					$$->lineno = lineno;
 				}
 			;
-simp_exp   : addtv_exp relop addtv_exp
+simp_exp   : addtv_exp relop addtv_exp      /*exp>exp 直接作为if判断条件之类的*/
                 {
-					$$ = newExpNode(OpK);
+					$$ = newExpNode(OpK);     /*比较关系结点*/
 					$$->child[0] = $1;
 					$$->child[1] = $3;
-					$$->attr.op = $2;
+					$$->attr.op = $2;   
 					
 					$$->lineno = lineno;
 				}
-			| addtv_exp   { $$ = $1; }
+			| addtv_exp   { $$ = $1; }      /*直接将值作为判断条件*/
 			;
 relop       : LET { $$ = LET; }
 			| LT { $$ = LT; }
@@ -278,7 +284,7 @@ relop       : LET { $$ = LET; }
 			| ET { $$ = ET; }
 			| NET { $$ = NET; }
 			;
-addtv_exp  : addtv_exp addop term
+addtv_exp  : addtv_exp addop term    /*加减乘除表达式*/
                 {
 					$$ = newExpNode(OpK);
 					$$->child[0] = $1;
@@ -294,7 +300,7 @@ addop       : PLUS
             | SUB    
                 { $$ = SUB; }
 			;
-term        : term mulop factor 
+term        : term mulop factor   
                 {
 					$$ = newExpNode(OpK);
 					$$->child[0] = $1;
@@ -312,8 +318,8 @@ mulop       : MUL
             | DIV    
 		        { $$ = DIV; }
 			;
-factor      : LPAREN exp RPAREN  { $$ = $2; }
-			| var  { $$ = $1; }
+factor      : LPAREN exp RPAREN  { $$ = $2; } /*（exp）*/
+			| var  { $$ = $1; }     /*id||id[exp]数组*/
 			| call { $$ = $1; }
 			| NUM            
 			    {
@@ -324,7 +330,7 @@ factor      : LPAREN exp RPAREN  { $$ = $2; }
 					$$->lineno = lineno;
 				}
 			;
-call        : ID LPAREN args RPAREN
+call        : ID LPAREN args RPAREN /*id(args)*/
                 {
 					$$ = newExpNode(CallK);
 					$$->attr.name = $1;

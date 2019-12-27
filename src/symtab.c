@@ -166,9 +166,11 @@ void updateArray(char * name, int index, int int_val, double real_val)
 
 /*	printSymTab()打印符号表，验证符号表是否正确构造。
  */
+
+/*
 void printSymTab(FILE * listing)
 {	int i = 0;
-	fprintf(listing,"\t/-----------------------------------\\\n");
+	fprintf(listing,"\t ----------------------------------- \n");
 	fprintf(listing,"\t|  VarName    Type IsArray DeclLine |\n");
 	fprintf(listing,"\t|------------ ---- ------- ---------|\n");
 	Symbol s = hashTable[i];
@@ -193,5 +195,44 @@ void printSymTab(FILE * listing)
 		}	
 		s = hashTable[i];
 	}
-	fprintf(listing,"\t\\-----------------------------------/\n");
-} /* printSymTab end */
+	fprintf(listing,"\t ----------------------------------- \n");
+} 
+*/
+
+void printSymTab(FILE * listing)
+{
+    int i=0;
+	int count=1;
+    fprintf(listing,"\t---------------------------------------------------------------------\n");
+    fprintf(listing,"\t|    order    |    name    |    type    |   IsArray    |   DelLine  |\n");
+  //fprintf(listing,"\t------------------------------------------------------\n");
+    fprintf(listing,"\t---------------------------------------------------------------------\n");
+    Symbol s = hashTable[i];
+    while(i++!=SIZE)
+    {
+        if(s!=NULL)
+        {
+			 fprintf(listing,"\t|      %-7d",count);
+			 count++;
+             fprintf(listing,"|    %-8s",s->name);
+             switch(s->type)
+             {
+                 case Int:
+                    fprintf(listing,"|     Int    ");
+                default:
+					break;
+             }
+             if(0 == s->arrayLength)
+			 {	fprintf(listing,"|       0      ");
+				fprintf(listing,"|     %-7d|\n", s->varLineno);
+			 }
+             else
+             {
+                fprintf(listing,"|       %-7d",s->arrayLength);
+				fprintf(listing,"|     %-7d|\n", s->varLineno);
+             }
+        }
+        s=hashTable[i];
+    }
+    fprintf(listing,"\t---------------------------------------------------------------------\n");
+}

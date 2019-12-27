@@ -1,10 +1,10 @@
 /*	searchSymTab()用于查找和插入符号表，并协助类型检查。
-	参数说明：
+参数说明：
 	name是当前的变量名，
 	varLineno是当前行号，用于错误提示，
 	type为变量声明时需要填入符号表的符号类型。
 	arrayLength为数组长度，为－123代表非数组，其他的小于0的值报错。
-	返回值：
+返回值：
 	正确返回时为arrayLength，遇错为－1；
 	*/
 int insertSymTab( char * name,  int varLineno, int type, int arrayLength );
@@ -25,7 +25,8 @@ void printSymTab(FILE * listing);
 
 /*	以下为解释执行时所用的函数，分别为：
 	得到变量的值，更新变量的值，
-	得到数组元素的值，更新数组元素的值。
+	得到数组元素的值，
+	更新数组元素的值。
 	*/
 int getValue(char * name);
 

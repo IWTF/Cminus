@@ -27,7 +27,7 @@
 #define TRUE 1
 #endif
 
-/* MAXRESERVED = the number of reserved words */
+/*最多保留的单词*/
 #define MAXRESERVED 9
 
 /* Bison 将为每个token生成一个整数值 */
@@ -39,12 +39,13 @@ extern FILE* listing; /* 输出文件 */
 
 extern int lineno; /* source line number for listing */
 
-typedef enum {StmtK, ExpK} NodeKind;
+typedef enum {StmtK, ExpK} NodeKind;      /*语句 表达式*/
 typedef enum {IfK, WhileK, AssignK, DeclK, CompoundK, FunK, ParmK, RetK} StmtKind;
 typedef enum {OpK, IntValueK, IdK, CallK} ExpKind;
 typedef enum {Int=1, Void} ExpType;
 
-#define MAXCHILDREN 3
+#define MAXCHILDREN 3      //孩子结点最大数量
+
 /* 语法树节点的定义，包括子树的数目，兄弟节点，所在行数，节点类型以及相应的属性 */
 typedef struct treeNode
 	{	struct treeNode * child[MAXCHILDREN];
@@ -52,18 +53,32 @@ typedef struct treeNode
 		int lineno;
 		NodeKind nodekind;
 		/* 联合kind：语句的种类 或 表达式的种类 */
-		union {	StmtKind stmt; ExpKind exp; } kind;
+		union 
+		{	
+			StmtKind stmt; 
+			ExpKind exp; 
+		} kind;
+
 		/* 联合attr：操作符 或 变量名 */
-		union {	int op;
-				char * name; } attr;
+		union 
+		{	int op;
+			char * name; 
+		} attr;
+
+
 		/* 联合value：整型或实型 */
-		union {	int int_val;
-				 } value;
-		union {	/* treeNode作为整型与浮点型的数组定义节点，
- 				使用treeNode中attr里的int_val作为数组的长度。
-				*/
-				int * intArray;
-				void * voidArray; } array;
+		union 
+		{	int int_val;
+		} value;
+
+		/* treeNode作为整型与浮点型的数组定义节点，
+ 		使用treeNode中attr里的int_val作为数组的长度。
+		*/
+		union 
+		{	
+			int * intArray;
+			void * voidArray;
+		} array;
 		int arrayLength;
 		ExpType type;
 	} TreeNode;
@@ -84,10 +99,12 @@ extern int TraceScan;
  */
 extern int TraceParse;
 
-/* TraceAnalyze is TRUE causes symbol table inserts
- * and lookups to be reported to the listing file
+/* TraceAnalyze为True时，
+ * 符号表会被输出到listing中
  */
 extern int TraceAnalyze;
 
-/* Error = TRUE prevents further passes if an error occurs */
+/* Error = TRUE 时
+*当错误发生立即停止继续工作
+*/
 extern int Error;

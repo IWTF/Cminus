@@ -85,11 +85,11 @@ union YYSTYPE
 {
 #line 22 "./yacc/cm.y" /* yacc.c:1909  */
 
-	struct treeNode * node;
-	int intval;
-	char * idName;
-	int binaryOperator;
-	int dataType;
+	struct treeNode * node;   /*树结点*/
+	int intval;               /*int型数据*/
+	char * idName;            /*字符串*/
+	int binaryOperator;       /*二元运算符*/
+	int dataType;             /*类型 int和void*/
 
 #line 95 "./yacc/cm.tab.h" /* yacc.c:1909  */
 };

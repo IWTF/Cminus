@@ -70,7 +70,7 @@
 #include "../src/include/scan.h"
 #include "../src/include/parse.h"
 
-static TreeNode * savedTree; /* stores syntax tree for later return */
+static TreeNode * savedTree;  /* 存储最后返回的语法树 */ 
 
 
 
@@ -149,11 +149,11 @@ union YYSTYPE
 {
 #line 22 "./yacc/cm.y" /* yacc.c:355  */
 
-	struct treeNode * node;
-	int intval;
-	char * idName;
-	int binaryOperator;
-	int dataType;
+	struct treeNode * node;   /*树结点*/
+	int intval;               /*int型数据*/
+	char * idName;            /*字符串*/
+	int binaryOperator;       /*二元运算符*/
+	int dataType;             /*类型 int和void*/
 
 #line 159 "./yacc/cm.tab.c" /* yacc.c:355  */
 };
@@ -451,13 +451,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    62,    62,    65,    66,    76,    77,    79,    89,   103,
-     104,   106,   114,   122,   123,   125,   134,   136,   146,   157,
-     165,   175,   177,   187,   189,   190,   191,   192,   193,   195,
-     196,   198,   206,   215,   223,   229,   237,   245,   247,   255,
-     263,   272,   274,   275,   276,   277,   278,   279,   281,   290,
-     292,   294,   297,   306,   308,   312,   315,   316,   317,   318,
-     327,   336,   337,   339,   349
+       0,    66,    66,    69,    70,    82,    83,    85,    95,   109,
+     110,   112,   120,   128,   129,   131,   140,   142,   152,   163,
+     171,   181,   183,   193,   195,   196,   197,   198,   199,   201,
+     202,   204,   212,   221,   229,   235,   243,   251,   253,   261,
+     269,   278,   280,   281,   282,   283,   284,   285,   287,   296,
+     298,   300,   303,   312,   314,   318,   321,   322,   323,   324,
+     333,   342,   343,   345,   355
 };
 #endif
 
@@ -1299,44 +1299,46 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 63 "./yacc/cm.y" /* yacc.c:1646  */
+#line 67 "./yacc/cm.y" /* yacc.c:1646  */
     { savedTree = (yyvsp[0].node);}
 #line 1305 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 65 "./yacc/cm.y" /* yacc.c:1646  */
+#line 69 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
 #line 1311 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 67 "./yacc/cm.y" /* yacc.c:1646  */
-    {	TreeNode * t = (yyvsp[-1].node);
+#line 71 "./yacc/cm.y" /* yacc.c:1646  */
+    {
+                    TreeNode * t = (yyvsp[-1].node);
 					if (t != NULL)
-					{	while (t->sibling != NULL){ t = t->sibling;}
+					{	
+                        while (t->sibling != NULL){ t = t->sibling;}
 						t->sibling = (yyvsp[0].node);
 						(yyval.node) = (yyvsp[-1].node);
 					}
 					else (yyval.node) = (yyvsp[0].node);
 				}
-#line 1324 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1326 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 76 "./yacc/cm.y" /* yacc.c:1646  */
+#line 82 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1330 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1332 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 77 "./yacc/cm.y" /* yacc.c:1646  */
+#line 83 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1336 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1338 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 80 "./yacc/cm.y" /* yacc.c:1646  */
+#line 86 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newStmtNode(DeclK);
 					(yyval.node)->attr.name = (yyvsp[-1].idName);
@@ -1346,92 +1348,92 @@ yyreduce:
 					
 					(yyval.node)->lineno = lineno;
 				}
-#line 1350 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1352 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 90 "./yacc/cm.y" /* yacc.c:1646  */
+#line 96 "./yacc/cm.y" /* yacc.c:1646  */
     {
-					(yyval.node) = newStmtNode(DeclK);
+					(yyval.node) = newStmtNode(DeclK);   /*声明结点*/
 					(yyval.node)->attr.name = (yyvsp[-4].idName);
 					(yyval.node)->arrayLength = (yyvsp[-2].intval);
-					(yyval.node)->type = (yyvsp[-5].dataType);
+					(yyval.node)->type = (yyvsp[-5].dataType); /*节点类型*/
 					
-					if((yyval.node)->type == Int) {
+					if((yyval.node)->type == Int) {   /*Int类型*/
 						int int_array_temp[(yyvsp[-2].intval)];
-						(yyval.node)->array.intArray = int_array_temp;
+						(yyval.node)->array.intArray = int_array_temp;  /*int数组大小开辟空间*/
 					}
 					(yyval.node)->lineno = lineno;	
 				}
-#line 1367 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1369 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 103 "./yacc/cm.y" /* yacc.c:1646  */
+#line 109 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.dataType) = (yyvsp[0].dataType); }
-#line 1373 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1375 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 104 "./yacc/cm.y" /* yacc.c:1646  */
+#line 110 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.dataType) = (yyvsp[0].dataType); }
-#line 1379 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1381 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 107 "./yacc/cm.y" /* yacc.c:1646  */
+#line 113 "./yacc/cm.y" /* yacc.c:1646  */
     {
-					(yyval.node) = newStmtNode(FunK);
+					(yyval.node) = newStmtNode(FunK);  /*函数类型结点*/
 					(yyval.node)->attr.name = (yyvsp[-3].idName);
 					(yyval.node)->type = (yyvsp[-4].dataType);
-					(yyval.node)->child[0] = (yyvsp[-1].node);	
+					(yyval.node)->child[0] = (yyvsp[-1].node);	/*转到参数时即变成了添加兄弟结点*/
 					(yyval.node)->lineno = lineno;
 				}
-#line 1391 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1393 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 115 "./yacc/cm.y" /* yacc.c:1646  */
+#line 121 "./yacc/cm.y" /* yacc.c:1646  */
     {
 				(yyval.node) = (yyvsp[0].node); 
 				(yyval.node)->lineno = lineno;
 			}
-#line 1400 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1402 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 122 "./yacc/cm.y" /* yacc.c:1646  */
+#line 128 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1406 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1408 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 123 "./yacc/cm.y" /* yacc.c:1646  */
+#line 129 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = NULL; }
-#line 1412 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1414 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 126 "./yacc/cm.y" /* yacc.c:1646  */
+#line 132 "./yacc/cm.y" /* yacc.c:1646  */
     {
-					TreeNode * t = (yyvsp[-2].node);
+					TreeNode * t = (yyvsp[-2].node); 
 					if (t != NULL)
 					{	while (t->sibling != NULL){ t = t->sibling;}
-						t->sibling = (yyvsp[0].node);
+						t->sibling = (yyvsp[0].node); /*将最后一个参数加入到兄弟结点*/
 					}
-					else (yyval.node) = (yyvsp[0].node);
+					else (yyval.node) = (yyvsp[0].node);   /*只有最后一个参数*/
 				}
-#line 1425 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1427 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 134 "./yacc/cm.y" /* yacc.c:1646  */
+#line 140 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1431 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1433 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 137 "./yacc/cm.y" /* yacc.c:1646  */
+#line 143 "./yacc/cm.y" /* yacc.c:1646  */
     {
                     (yyval.node) = newStmtNode(ParmK);
 					(yyval.node)->attr.name = (yyvsp[0].idName);
@@ -1441,35 +1443,35 @@ yyreduce:
 					
 					(yyval.node)->lineno = lineno;
 				}
-#line 1445 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1447 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 147 "./yacc/cm.y" /* yacc.c:1646  */
+#line 153 "./yacc/cm.y" /* yacc.c:1646  */
     {
-					(yyval.node) = newStmtNode(ParmK);
+					(yyval.node) = newStmtNode(ParmK);  /*参数类型结点*/
 					(yyval.node)->attr.name = (yyvsp[-2].idName);
 					(yyval.node)->type = (yyvsp[-3].dataType);
-					(yyval.node)->arrayLength = -1;
+					(yyval.node)->arrayLength = -1; /*没有具体指明长度，先赋值为-1*/
 					
-					(yyval.node)->lineno = lineno;
+					(yyval.node)->lineno = lineno;  
 				}
-#line 1458 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1460 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 158 "./yacc/cm.y" /* yacc.c:1646  */
-    {	(yyval.node) = newStmtNode(CompoundK);
-					(yyval.node)->child[0] = (yyvsp[-2].node);
-					(yyval.node)->child[1] = (yyvsp[-1].node);
+#line 164 "./yacc/cm.y" /* yacc.c:1646  */
+    {	(yyval.node) = newStmtNode(CompoundK);   /*函数内容类型结点*/
+					(yyval.node)->child[0] = (yyvsp[-2].node);             /*local 指声明*/
+					(yyval.node)->child[1] = (yyvsp[-1].node);             /*指计算部分*/
 					
-					(yyval.node)->lineno = lineno;
+					(yyval.node)->lineno = lineno;      
 				}
-#line 1469 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1471 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 166 "./yacc/cm.y" /* yacc.c:1646  */
+#line 172 "./yacc/cm.y" /* yacc.c:1646  */
     {
                     TreeNode * t = (yyvsp[-1].node);
 					if (t != NULL)
@@ -1479,17 +1481,17 @@ yyreduce:
 					}
 					else (yyval.node) = (yyvsp[0].node);
 				}
-#line 1483 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1485 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 175 "./yacc/cm.y" /* yacc.c:1646  */
+#line 181 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = NULL; }
-#line 1489 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1491 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 178 "./yacc/cm.y" /* yacc.c:1646  */
+#line 184 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					TreeNode * t = (yyvsp[-1].node);
 					if (t != NULL)
@@ -1499,59 +1501,59 @@ yyreduce:
 					}
 					else (yyval.node) = (yyvsp[0].node);
 				}
-#line 1503 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1505 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 187 "./yacc/cm.y" /* yacc.c:1646  */
+#line 193 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = NULL; }
-#line 1509 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1511 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 189 "./yacc/cm.y" /* yacc.c:1646  */
+#line 195 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1515 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1517 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 190 "./yacc/cm.y" /* yacc.c:1646  */
+#line 196 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1521 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1523 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 191 "./yacc/cm.y" /* yacc.c:1646  */
+#line 197 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1527 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1529 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 192 "./yacc/cm.y" /* yacc.c:1646  */
+#line 198 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1533 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1535 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 193 "./yacc/cm.y" /* yacc.c:1646  */
+#line 199 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1539 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1541 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 195 "./yacc/cm.y" /* yacc.c:1646  */
+#line 201 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[-1].node); }
-#line 1545 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1547 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 196 "./yacc/cm.y" /* yacc.c:1646  */
+#line 202 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = NULL; }
-#line 1551 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1553 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 199 "./yacc/cm.y" /* yacc.c:1646  */
+#line 205 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newStmtNode(IfK);
 					(yyval.node)->child[0] = (yyvsp[-2].node);
@@ -1559,11 +1561,11 @@ yyreduce:
 					(yyval.node)->child[2] = NULL;
 					(yyval.node)->lineno = lineno;
 			    }
-#line 1563 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1565 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 207 "./yacc/cm.y" /* yacc.c:1646  */
+#line 213 "./yacc/cm.y" /* yacc.c:1646  */
     {
                     (yyval.node) = newStmtNode(IfK);
 					(yyval.node)->child[0] = (yyvsp[-4].node);
@@ -1571,43 +1573,43 @@ yyreduce:
 					(yyval.node)->child[2] = (yyvsp[0].node);
 					(yyval.node)->lineno = lineno;
 			    }
-#line 1575 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1577 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 216 "./yacc/cm.y" /* yacc.c:1646  */
+#line 222 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newStmtNode(WhileK);
 					(yyval.node)->child[0] = (yyvsp[-2].node);
 					(yyval.node)->child[1] = (yyvsp[0].node);
 					(yyval.node)->lineno = lineno;
 			    }
-#line 1586 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1588 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 224 "./yacc/cm.y" /* yacc.c:1646  */
+#line 230 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newStmtNode(RetK);
                     (yyval.node)->child[0] = NULL;	
 					(yyval.node)->lineno = lineno;
 				}
-#line 1596 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1598 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 230 "./yacc/cm.y" /* yacc.c:1646  */
+#line 236 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newStmtNode(RetK);
 					(yyval.node)->child[0] = (yyvsp[-1].node);
 					(yyval.node)->lineno = lineno;
 
 				}
-#line 1607 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1609 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 238 "./yacc/cm.y" /* yacc.c:1646  */
+#line 244 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newStmtNode(AssignK);
 					(yyval.node)->attr.name = (yyvsp[-2].node);
@@ -1615,17 +1617,17 @@ yyreduce:
 					(yyval.node)->child[1] = (yyvsp[0].node);
 					(yyval.node)->lineno = lineno;
 				}
-#line 1619 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1621 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 245 "./yacc/cm.y" /* yacc.c:1646  */
+#line 251 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1625 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1627 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 248 "./yacc/cm.y" /* yacc.c:1646  */
+#line 254 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newExpNode(IdK);
 					(yyval.node)->attr.name = (yyvsp[0].idName);
@@ -1633,77 +1635,77 @@ yyreduce:
 					(yyval.node)->child[0] = NULL;
 					(yyval.node)->lineno = lineno;
 				}
-#line 1637 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1639 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 256 "./yacc/cm.y" /* yacc.c:1646  */
+#line 262 "./yacc/cm.y" /* yacc.c:1646  */
     {
-					(yyval.node) = newExpNode(IdK);
+					(yyval.node) = newExpNode(IdK);    /*id结点*/
 					(yyval.node)->attr.name = (yyvsp[-3].idName);
 					(yyval.node)->child[0] = (yyvsp[-1].node);
 					(yyval.node)->lineno = lineno;
 				}
-#line 1648 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1650 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 264 "./yacc/cm.y" /* yacc.c:1646  */
+#line 270 "./yacc/cm.y" /* yacc.c:1646  */
     {
-					(yyval.node) = newExpNode(OpK);
+					(yyval.node) = newExpNode(OpK);     /*比较关系结点*/
 					(yyval.node)->child[0] = (yyvsp[-2].node);
 					(yyval.node)->child[1] = (yyvsp[0].node);
-					(yyval.node)->attr.op = (yyvsp[-1].node);
+					(yyval.node)->attr.op = (yyvsp[-1].node);   
 					
 					(yyval.node)->lineno = lineno;
 				}
-#line 1661 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1663 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 272 "./yacc/cm.y" /* yacc.c:1646  */
+#line 278 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1667 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1669 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 274 "./yacc/cm.y" /* yacc.c:1646  */
+#line 280 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = LET; }
-#line 1673 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1675 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 275 "./yacc/cm.y" /* yacc.c:1646  */
+#line 281 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = LT; }
-#line 1679 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1681 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 276 "./yacc/cm.y" /* yacc.c:1646  */
+#line 282 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = GT; }
-#line 1685 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1687 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 277 "./yacc/cm.y" /* yacc.c:1646  */
+#line 283 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = GET; }
-#line 1691 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1693 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 278 "./yacc/cm.y" /* yacc.c:1646  */
+#line 284 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = ET; }
-#line 1697 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1699 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 279 "./yacc/cm.y" /* yacc.c:1646  */
+#line 285 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = NET; }
-#line 1703 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1705 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 282 "./yacc/cm.y" /* yacc.c:1646  */
+#line 288 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newExpNode(OpK);
 					(yyval.node)->child[0] = (yyvsp[-2].node);
@@ -1712,29 +1714,29 @@ yyreduce:
 					
 					(yyval.node)->lineno = lineno;
 				}
-#line 1716 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1718 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 290 "./yacc/cm.y" /* yacc.c:1646  */
+#line 296 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1722 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1724 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 293 "./yacc/cm.y" /* yacc.c:1646  */
+#line 299 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = PLUS; }
-#line 1728 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1730 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 295 "./yacc/cm.y" /* yacc.c:1646  */
+#line 301 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = SUB; }
-#line 1734 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1736 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 298 "./yacc/cm.y" /* yacc.c:1646  */
+#line 304 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newExpNode(OpK);
 					(yyval.node)->child[0] = (yyvsp[-2].node);
@@ -1743,49 +1745,49 @@ yyreduce:
 					
 					(yyval.node)->lineno = lineno;
 				}
-#line 1747 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1749 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 306 "./yacc/cm.y" /* yacc.c:1646  */
+#line 312 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1753 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1755 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 309 "./yacc/cm.y" /* yacc.c:1646  */
+#line 315 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = MUL;
 				}
-#line 1761 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1763 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 313 "./yacc/cm.y" /* yacc.c:1646  */
+#line 319 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = DIV; }
-#line 1767 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1769 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 315 "./yacc/cm.y" /* yacc.c:1646  */
+#line 321 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[-1].node); }
-#line 1773 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1775 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 316 "./yacc/cm.y" /* yacc.c:1646  */
+#line 322 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1779 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1781 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 317 "./yacc/cm.y" /* yacc.c:1646  */
+#line 323 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1785 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1787 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 319 "./yacc/cm.y" /* yacc.c:1646  */
+#line 325 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newExpNode(IntValueK);
 					(yyval.node)->value.int_val = (yyvsp[0].intval);
@@ -1793,11 +1795,11 @@ yyreduce:
 					
 					(yyval.node)->lineno = lineno;
 				}
-#line 1797 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1799 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 328 "./yacc/cm.y" /* yacc.c:1646  */
+#line 334 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					(yyval.node) = newExpNode(CallK);
 					(yyval.node)->attr.name = (yyvsp[-3].idName);
@@ -1805,23 +1807,23 @@ yyreduce:
 					
 					(yyval.node)->lineno = lineno;
 				}
-#line 1809 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1811 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 336 "./yacc/cm.y" /* yacc.c:1646  */
+#line 342 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1815 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1817 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 337 "./yacc/cm.y" /* yacc.c:1646  */
+#line 343 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = NULL; }
-#line 1821 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1823 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 340 "./yacc/cm.y" /* yacc.c:1646  */
+#line 346 "./yacc/cm.y" /* yacc.c:1646  */
     {
 					TreeNode * t = (yyvsp[-2].node);
 					if (t != NULL)
@@ -1831,17 +1833,17 @@ yyreduce:
 					}
 					else (yyval.node) = (yyvsp[0].node);
 				}
-#line 1835 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1837 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 349 "./yacc/cm.y" /* yacc.c:1646  */
+#line 355 "./yacc/cm.y" /* yacc.c:1646  */
     { (yyval.node) = (yyvsp[0].node); }
-#line 1841 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1843 "./yacc/cm.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1845 "./yacc/cm.tab.c" /* yacc.c:1646  */
+#line 1847 "./yacc/cm.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2069,7 +2071,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 353 "./yacc/cm.y" /* yacc.c:1906  */
+#line 359 "./yacc/cm.y" /* yacc.c:1906  */
 
 
 int yyerror(char * message)

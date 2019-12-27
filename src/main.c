@@ -12,7 +12,9 @@ int Parse = TRUE;       /*一些动作标志*/
 int Analyze = TRUE;
 int Execute = TRUE;
 
+
 int printSyntaxTree = TRUE;
+int printQUAD=TRUE;
 
 int Error = FALSE;
 int
@@ -39,7 +41,6 @@ main( int argc, char * argv[] )
 	{	fprintf(stderr,"File %s not found\n",pgm);     //打开文件错误
 		exit(1);
 	}
-	
 	fprintf(listing,"\nCM Interpretation: %s\n",pgm);
    
 	if (Parse)
@@ -48,6 +49,16 @@ main( int argc, char * argv[] )
 		if (printSyntaxTree)
 		{	fprintf(listing,"Syntax tree:\n");
 			printTree(syntaxTree);
+		}
+		if(printQUAD)
+		{
+			
+            getRoot(syntaxTree);
+			
+			BFSTree(syntaxTree);
+			
+			fprintf(listing,"Quaternary postures:\n");
+			printQua();
 		}
 		if (! Error)
 		{	if (Analyze)
@@ -74,6 +85,7 @@ main( int argc, char * argv[] )
 					fprintf(listing,"\n\nResult:Some errors occurred in Execution.\n");
 			}
 			*/
+			
 		}
 	}
 	fclose(source);

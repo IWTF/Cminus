@@ -44,5 +44,6 @@ clean:
 ifeq ($(O), )
 	O = 
 endif
+.PHONY: test
 test:
-	./test/interpreter.exe ./test/$(I) $(O)
+	./test/interpreter.exe ./test/$(I)  $(O)

@@ -107,20 +107,48 @@ char * copyString(char * s)
 	else strcpy(t,s);
 	return t;
 }
-
+///////////////////////////////////////////////////////
 /* 缩进数 */
+/*
 static int indentCount = 0;
-
+*/
 /* 改变需要输出的缩进的数目——宏定义 */
-#define INDENT indentCount+=2
-#define UNINDENT indentCount-=2
+/*
+#define INDENT indentCount+=4
+#define UNINDENT indentCount-=4
+*/
+//////////////////////////////////////////////////////
+/* 缩进数 */
+static int preIndentCount = -12;
+static int indentCount = -12;
+/* 改变需要输出的缩进的数目——宏定义 */
+#define INDENT   {preIndentCount=indentCount; indentCount+=12;}
+#define UNINDENT {preIndentCount=indentCount; indentCount-=12;}
+
 
 /* printSpaces 通过输出空格实现缩进 */
+/*
 static void printSpaces(void)
 {	int i;
 	for (i=0;i<indentCount;i++)
 	fprintf(listing," ");
 }
+*/
+
+/* printSpaces 通过输出空格实现缩进 */
+static void printSpaces(void)
+{	int i;
+	if (preIndentCount != indentCount)
+	{
+		for (i=0;i<indentCount;i++)
+			fprintf(listing," ");
+		fprintf(listing, "|\n");
+	}
+	for (i=0;i<indentCount;i++)
+		fprintf(listing," ");
+	fprintf(listing,"|---------- ");
+}
+
 
 /* printTree 输出语法树 */
 void printTree( TreeNode * tree )
