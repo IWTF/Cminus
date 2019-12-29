@@ -1,4 +1,5 @@
 #include "include/globals.h"
+#include "include/gen.h"
 #include "include/util.h"
 #include "include/parse.h"
 #include "include/analyze.h"
@@ -11,7 +12,6 @@ FILE * listing;
 int Parse = TRUE;       /*一些动作标志*/
 int Analyze = TRUE;
 int Execute = TRUE;
-
 
 int printSyntaxTree = TRUE;
 int printQUAD=TRUE;
@@ -34,8 +34,8 @@ main( int argc, char * argv[] )
 		listing = fopen(argv[2], "w");
 	}
 	strcpy(pgm,argv[1]) ;             //第二个参数为源文件名
-	if (strchr (pgm, '.') == NULL)       //检测是否带文件后缀.cm
-		strcat(pgm,".cmm");            //手动添加
+	if (strchr (pgm, 'cm') == NULL)       //检测是否带文件后缀.cm
+		strcat(pgm,".cm");            //手动添加
 	source = fopen(pgm,"r");
 	if (source==NULL)
 	{	fprintf(stderr,"File %s not found\n",pgm);     //打开文件错误

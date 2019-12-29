@@ -915,20 +915,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 56 "./lex/cm.l"
+#line 57 "./lex/cm.l"
 {	char c;
 			int flag = 1;
 			do
 			{	c = input();
 				entry1:
 				if (c == EOF) break;
-				if (c == '\n') lineno++;
+				if (c == '\n') lineno++;	/* 遇到换行，记录行数的增加 */
 				if (c == '*')
 				{	c = input();
-					if (c == '/')
+					if (c == '/')   /* 遇到多行注释结束符 */
 						flag = 0;
 					else
-						goto entry1;
+						goto entry1;  /* 不够成结束，继续循环 */
 				}
 			} while (flag);
 		}
@@ -936,12 +936,12 @@ YY_RULE_SETUP
 case 30:
 /* rule 30 can match eol */
 YY_RULE_SETUP
-#line 72 "./lex/cm.l"
+#line 73 "./lex/cm.l"
 {lineno++;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 74 "./lex/cm.l"
+#line 75 "./lex/cm.l"
 ECHO;
 	YY_BREAK
 #line 948 "./lex/cm.lex.c"
@@ -1938,7 +1938,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 74 "./lex/cm.l"
+#line 75 "./lex/cm.l"
 
 
 /* 用于语法分析时初始化词法分析接口 */
@@ -1953,22 +1953,5 @@ void iniLexer(void)
 		yyout = listing;
 	}
 }
-/* 词法分析器专用 
-TokenType getToken(void)
-{	static int firstTime = TRUE;
-	TokenType currentToken;
-	if (firstTime)
-	{	firstTime = FALSE;
-		lineno++;
-		yyin = source;
-		yyout = listing;
-	}
-	currentToken = yylex();
-	strncpy(tokenString,yytext,MAXTOKENLEN);
-	if (TraceScan) {
-		fprintf(listing,"\t%d: ",lineno);
-		printToken(currentToken);
-	}
-	return currentToken;
-}*/
+
 

@@ -53,19 +53,20 @@ whitespace	[ \t]*
 "]"		{ return RBRACKET;}
 ","		{ return COMMA;}
 
+
 "/*"	{	char c;
 			int flag = 1;
 			do
 			{	c = input();
 				entry1:
 				if (c == EOF) break;
-				if (c == '\n') lineno++;
+				if (c == '\n') lineno++;	/* 遇到换行，记录行数的增加 */
 				if (c == '*')
 				{	c = input();
-					if (c == '/')
+					if (c == '/')   /* 遇到多行注释结束符 */
 						flag = 0;
 					else
-						goto entry1;
+						goto entry1;  /* 不够成结束，继续循环 */
 				}
 			} while (flag);
 		}
@@ -84,21 +85,4 @@ void iniLexer(void)
 		yyout = listing;
 	}
 }
-/* 词法分析器专用 
-TokenType getToken(void)
-{	static int firstTime = TRUE;
-	TokenType currentToken;
-	if (firstTime)
-	{	firstTime = FALSE;
-		lineno++;
-		yyin = source;
-		yyout = listing;
-	}
-	currentToken = yylex();
-	strncpy(tokenString,yytext,MAXTOKENLEN);
-	if (TraceScan) {
-		fprintf(listing,"\t%d: ",lineno);
-		printToken(currentToken);
-	}
-	return currentToken;
-}*/
+

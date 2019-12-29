@@ -1,17 +1,14 @@
-/*	Calculate factorial
-*	Test if-else & return & call & not variable declaration
-*/
-int gcd(int u,int v)
-{ 
-  if(v==0) return u;
-  else  return gcd(v,u-u/v*v);
-       /*u-u/v*v == u mod v*/
-}
-int main(void)
-{  int x; int y;
-   x=input();
-   y=input();
-   if(m==0) return 1;
-   output(gcd(x,y));
-   return 0;
+void main(void)
+{
+	int i;
+	int j;
+	i=0;
+        j=1;      
+	while (i < 10)
+	{
+		i=i+1;
+     		j=j+i;
+	}
+        output(i);
+        output(j);
 }

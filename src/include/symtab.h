@@ -15,7 +15,7 @@ int insertSymTab( char * name,  int varLineno, int type, int arrayLength );
 int lookupSymTab ( char * name, int int_val, double real_val, int varLineno );
 
 /*	参数type为0时，直接返回变量在符号表中的类型；
-	type不为0时，检查变量名的类型与传入的type是否一致，一致返回0，不一致返回1。
+	type不为0时·，检查变量名的类型与传入的type是否一致，一致返回0，不一致返回1。
 	*/
 int checkType(char * name, int type, int varLineno);
 

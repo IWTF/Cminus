@@ -1,5 +1,4 @@
-/* Semantic error:  The integer variable i is used as a boolean
-*/
+
 void main(void)
 {
       int i;

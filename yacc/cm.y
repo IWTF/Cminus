@@ -18,7 +18,7 @@ static TreeNode * savedTree;  /* 存储最后返回的语法树 */
 
 %}
 
-/*yylval uinio 数据结构 即将使用的终结符号的类型*/
+/*yylval union 数据结构 即将使用的终结符号的类型*/
 %union{
 	struct treeNode * node;   /*树结点*/
 	int intval;               /*int型数据*/

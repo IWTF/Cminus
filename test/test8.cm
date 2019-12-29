@@ -1,5 +1,4 @@
-/* Syntax Error - Input parameter to Fibonacci lacks a data type
-*/
+
 int Fibonacci(x1)
 {
      int val;

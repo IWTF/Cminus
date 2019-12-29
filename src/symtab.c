@@ -25,16 +25,15 @@ static int hash ( char * key )
 	变量名，类型，声明时的行号，下一个表项的地址
  */
 typedef struct SymbolRec
-{	char * name;
-	ExpType type;
-	//LineList lines;
-	int varLineno;
+{	char * name;             //变量名
+	ExpType type;            //变量类型
+	int varLineno;           //声明时行号
 	union {	int int_val;
-			double real_val; } value;
+			double real_val; } value; //变量值
 	union {	int * intArray;
 			double * realArray; } array;
-	int arrayLength;
-	struct SymbolRec * next;
+	int arrayLength;         //数组长度，为0则表示不是数组
+	struct SymbolRec * next;  //指向下一表项
 } * Symbol;
 
 /* the hash table */
@@ -52,7 +51,7 @@ int insertSymTab( char * name, int varLineno, int type, int arrayLength )
 		s->name = name;
 		s->varLineno = varLineno;
 		s->type = (ExpType)type;
-		if (0 > arrayLength)
+		if (0 >= arrayLength)
 		{	fprintf(listing, 
 				"Error:line %d:The length of array should be more than zero.\n", varLineno);
 			Error = TRUE;
@@ -164,40 +163,6 @@ void updateArray(char * name, int index, int int_val, double real_val)
 	
 }
 
-/*	printSymTab()打印符号表，验证符号表是否正确构造。
- */
-
-/*
-void printSymTab(FILE * listing)
-{	int i = 0;
-	fprintf(listing,"\t ----------------------------------- \n");
-	fprintf(listing,"\t|  VarName    Type IsArray DeclLine |\n");
-	fprintf(listing,"\t|------------ ---- ------- ---------|\n");
-	Symbol s = hashTable[i];
-	while(i++ != SIZE)
-	{	if(s != NULL)
-		{	fprintf(listing,"\t|  %-11s",s->name);
-			switch(s->type)
-			{	case Int:
-					fprintf(listing, "Int ");
-					break;
-				default:
-					break;
-			}
-			if(0 == s->arrayLength)
-			{	fprintf(listing,"    0");
-				fprintf(listing,"      %-6d |\n", s->varLineno);
-			}
-			else
-			{	fprintf(listing,"    %-4d   ",s->arrayLength);
-				fprintf(listing,"%-6d |\n", s->varLineno);
-			}
-		}	
-		s = hashTable[i];
-	}
-	fprintf(listing,"\t ----------------------------------- \n");
-} 
-*/
 
 void printSymTab(FILE * listing)
 {

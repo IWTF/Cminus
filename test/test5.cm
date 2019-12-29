@@ -1,5 +1,3 @@
-/* Syntax error:  "ren" should be "rem"
-*/
 
 void main(void)
 {

@@ -1,0 +1,11 @@
+/* 这是一个简单的测试用例 */
+
+int main(void){
+  int a;
+  int b[3];
+
+  a =1;
+  b[1] = a;
+  output(a);
+  return 0;
+}

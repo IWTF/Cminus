@@ -1,20 +1,29 @@
-int main(void)
+void main(void)
 {
-  int a;
-  int c;
-  int b;
-  int i;
-  int j;
-  a=6;
-  b=1;
-  while( a != 0 )
-  {
-        int c;
-	
-  }
-  i = 3;
-  j = 4;
-  a = i + j + 1;
-  b = i * j * 2;
 
+	int x;
+	int y;
+
+	x = 45;
+
+	if (x >=10)
+	{
+		if (x>=20)
+		{
+			if (x>= 30)
+			{
+				if (x >=40)  
+				{
+					if (x >= 50)  y=-1;
+					else y = 4;
+				}
+				else y=3;
+			}
+			else y=2;
+		}
+		else y=1;
+	}
+	else y=0;
+
+      output(y);
 }

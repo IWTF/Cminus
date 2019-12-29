@@ -1,8 +1,12 @@
+
 void main(void)
 {
+
 	int x;
 	int y;
+
 	x = 45;
+
 	if (x >=10)
 	{
 		if (x>=20)
@@ -11,8 +15,9 @@ void main(void)
 			{
 				if (x >=40)  
 				{
-					if (x >= 50)  y=1-1;
+					if (x >= 50)  y=1;
 					else y = 4;
+                                        else x = 10;
 				}
 				else y=3;
 			}

@@ -1,5 +1,3 @@
-/* Syntax Error - Fibonacci lacks a data type
-*/
 
 Fibonacci(int x1)
 {
